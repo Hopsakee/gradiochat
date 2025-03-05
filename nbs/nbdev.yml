@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "gradiochat"
+  site-url: "https://Hopsakee.github.io/gradiochat"
+  description: "App to easily create different chat apps with different context, system messages and gradio layout."
+  repo-branch: main
+  repo-url: "https://github.com/Hopsakee/gradiochat"
