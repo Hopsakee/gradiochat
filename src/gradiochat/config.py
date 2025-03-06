@@ -5,6 +5,13 @@
 # %% auto 0
 __all__ = ['AppTheme', 'ModelConfig', 'ChatAppConfig', 'BaseChatApp', 'foo']
 
+# %% ../../nbs/00_config.ipynb 3
+from pydantic import BaseModel, Field
+from typing import Optional, List, Tuple
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
 # %% ../../nbs/00_config.ipynb 4
 # Load environment variables from .env file
 load_dotenv()
