@@ -83,7 +83,12 @@ class GradioChat:
                         gr.Markdown(self.app.config.description)
             
             # Chat interface
-            chatbot = gr.Chatbot(height=500, label="Conversation")
+            chatbot = gr.Chatbot(
+                height=500,
+                label="Conversation",
+                editable=True,
+                show_copy_button=True,
+                show_copy_all_button=True)
             msg = gr.Textbox(
                 placeholder="Type your message here...",
                 label="Your message",
@@ -94,6 +99,24 @@ class GradioChat:
             with gr.Row():
                 submit_btn = gr.Button("Send", variant="primary")
                 clear_btn = gr.ClearButton([msg, chatbot], value="Clear chat")
+
+            # Export functionality
+            with gr.Accordion("Export Options", open=False):
+                export_md = gr.Markdown("Select export options:")
+                
+                with gr.Row():
+                    export_last_btn = gr.Button("Export Last Response")
+                    export_all_btn = gr.Button("Export Full Conversation")
+                
+                # Hidden textbox to hold the markdown for export
+                export_text = gr.Textbox(visible=False)
+                
+                # Buttons for copying and downloading
+                with gr.Row():
+                    copy_btn = gr.Button("Copy to Clipboard")
+                    download_btn = gr.Button("Download as Markdown")
+                
+                file_output = gr.File(label="Download", visible=False)
             
             # System prompt and context viewer (collapsible)
             with gr.Accordion("View System Information", open=False):
@@ -115,7 +138,50 @@ class GradioChat:
                 inputs=[msg, chatbot],
                 outputs=[msg, chatbot]
             )
+
+             # Export event handlers
+            def format_last_response(chat_history):
+                if not chat_history:
+                    return "No conversation to export."
+                last_user_msg, last_assistant_msg = chat_history[-1]
+                return f"# Response\n\n{last_assistant_msg}"
             
+            def format_full_conversation(chat_history):
+                if not chat_history:
+                    return "No conversation to export."
+                
+                markdown = f"# {self.app.config.app_name} - Conversation\n\n"
+                
+                for user_msg, assistant_msg in chat_history:
+                    markdown += f"## User\n\n{user_msg}\n\n"
+                    markdown += f"## Assistant\n\n{assistant_msg}\n\n"
+                    markdown += "---\n\n"
+                
+                return markdown
+            
+            export_last_btn.click(
+                format_last_response,
+                inputs=[chatbot],
+                outputs=[export_text]
+            )
+            
+            export_all_btn.click(
+                format_full_conversation,
+                inputs=[chatbot],
+                outputs=[export_text]
+            )
+            
+            # File download functionality
+            def create_markdown_file(markdown_text):
+                return [f"{self.app.config.app_name.replace(' ', '_')}_export.md",
+                    markdown_text]
+            
+            download_btn.click(
+                lambda text: [f"{self.app.config.app_name.replace(' ','_')}._export.md", text],
+                inputs=[export_text],
+                outputs=[file_output]
+            )
+                
             # Initialize with starter prompt if available
             if self.app.config.starter_prompt:
                 chatbot.value = [("", self.app.config.starter_prompt)]
