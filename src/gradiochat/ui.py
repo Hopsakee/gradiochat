@@ -8,8 +8,9 @@ __all__ = ['GradioChat', 'create_chat_app']
 # %% ../../nbs/02_ui.ipynb 3
 import gradio as gr
 from typing import List, Tuple, Generator, Dict, Any, Optional
-from .config import ChatAppConfig
+from .config import ChatAppConfig, ModelConfig
 from .app import BaseChatApp
+from pathlib import Path
 
 # %% ../../nbs/02_ui.ipynb 4
 class GradioChat:
@@ -55,18 +56,31 @@ class GradioChat:
     
     def build_interface(self) -> gr.Blocks:
         """Build and return the Gradio interface"""
-        with gr.Blocks(
-            theme=gr.themes.Base(
-                primary_hue=self.app.config.theme.primary_color,
-                secondary_hue=self.app.config.theme.secondary_color,
-                neutral_hue=self.app.config.theme.background_color,
-                # text_color=self.app.config.theme.text_color
-            )
-        ) as interface:
-            # App title and description
-            gr.Markdown(f"# {self.app.config.app_name}")
-            if self.app.config.description:
-                gr.Markdown(self.app.config.description)
+        with gr.Blocks(theme=self.app.config.theme) as interface:
+            with gr.Row():
+                # Left column for logo
+                with gr.Column(scale=1):
+                    if self.app.config.logo_path:
+                        gr.Image(value=self.app.config.logo_path,
+                            show_label=False,
+                            container=False,
+                            show_download_button=False,
+                            show_fullscreen_button=False,
+                            height=80,
+                            width=80)
+                    else:
+                        gr.Image(value=None,
+                            show_label=False,
+                            container=False,
+                            show_download_button=False,
+                            show_fullscreen_button=False,
+                            height=80,
+                            width=80)
+                with gr.Column(scale=4):
+                    # App title and description
+                    gr.Markdown(f"# {self.app.config.app_name}")
+                    if self.app.config.description:
+                        gr.Markdown(self.app.config.description)
             
             # Chat interface
             chatbot = gr.Chatbot(height=500, label="Conversation")
@@ -86,7 +100,7 @@ class GradioChat:
                 if self.app.config.show_system_prompt:
                     gr.Markdown(f"### System Prompt\n{self.app.config.system_prompt}")
                 
-                if self.app.config.show_context and self.app.context_text:
+                if self.app.config.show_context and hasattr(self.app, 'context_text') and self.app.context_text:
                     gr.Markdown(f"### Additional Context\n{self.app.context_text}")
             
             # Set up event handlers
