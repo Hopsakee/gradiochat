@@ -19,10 +19,9 @@ load_dotenv()
 # %% ../../nbs/00_config.ipynb 7
 class AppTheme(BaseModel):
     """Configuration for the visual theme of the app"""
-    primary_color: str = Field(default="#007BFF", description="Primary color for UI elements")
-    secondary_color: str = Field(default="#6C757D", description="Secondary color for UI elements")
-    background_color: str = Field(default="#FFFFFF", description="Background color")
-    text_color: str = Field(default="#212529", description="Main text color")
+    primary_color: str = Field(default="blue", description="Primary color for UI elements")
+    secondary_color: str = Field(default="orange", description="Secondary color for UI elements")
+    background_color: str = Field(default="zinc", description="Background color")
     logo_path: Optional[Path] = Field(default=None, description="Path to logo image")
 
 # %% ../../nbs/00_config.ipynb 10
@@ -48,7 +47,7 @@ class ModelConfig(BaseModel):
 # %% ../../nbs/00_config.ipynb 12
 class Message(BaseModel):
     """A message in a conversation"""
-    role: Literal["system", "user", "assistatn"] = Field(..., description="Role of the message sender")
+    role: Literal["system", "user", "assistant"] = Field(..., description="Role of the message sender")
     content: str = Field(..., description="Content of the message")
 
 # %% ../../nbs/00_config.ipynb 14

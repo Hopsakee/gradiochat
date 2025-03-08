@@ -35,7 +35,7 @@ class HuggingFaceClient():
         self.model_config = model_config
 
         # Default to HF Inference API if no base URL is provided
-        base_url = model_config.api_base_url or "https//router.huggingface.co/hf-inference/v1"
+        base_url = model_config.api_base_url or "https://router.huggingface.co/hf-inference/v1"
 
         self.client = OpenAI(
             base_url=base_url,

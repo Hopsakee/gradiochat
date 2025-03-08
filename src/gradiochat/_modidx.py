@@ -29,4 +29,11 @@ d = { 'settings': { 'branch': 'main',
                                    'gradiochat.config.ChatAppConfig': ('config.html#chatappconfig', 'gradiochat/config.py'),
                                    'gradiochat.config.Message': ('config.html#message', 'gradiochat/config.py'),
                                    'gradiochat.config.ModelConfig': ('config.html#modelconfig', 'gradiochat/config.py'),
-                                   'gradiochat.config.ModelConfig.api_key': ('config.html#modelconfig.api_key', 'gradiochat/config.py')}}}
+                                   'gradiochat.config.ModelConfig.api_key': ('config.html#modelconfig.api_key', 'gradiochat/config.py')},
+            'gradiochat.ui': { 'gradiochat.ui.GradioChat': ('ui.html#gradiochat', 'gradiochat/ui.py'),
+                               'gradiochat.ui.GradioChat.__init__': ('ui.html#gradiochat.__init__', 'gradiochat/ui.py'),
+                               'gradiochat.ui.GradioChat.build_interface': ('ui.html#gradiochat.build_interface', 'gradiochat/ui.py'),
+                               'gradiochat.ui.GradioChat.launch': ('ui.html#gradiochat.launch', 'gradiochat/ui.py'),
+                               'gradiochat.ui.GradioChat.respond': ('ui.html#gradiochat.respond', 'gradiochat/ui.py'),
+                               'gradiochat.ui.GradioChat.respond_stream': ('ui.html#gradiochat.respond_stream', 'gradiochat/ui.py'),
+                               'gradiochat.ui.create_chat_app': ('ui.html#create_chat_app', 'gradiochat/ui.py')}}}
