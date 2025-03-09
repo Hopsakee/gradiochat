@@ -1,0 +1,252 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "gradiochat",
+    "section": "",
+    "text": "Easy-to-use interface\nSupports integration with various AI models\nReal-time chat capabilities\nOpen-source and customizable",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#features",
+    "href": "index.html#features",
+    "title": "gradiochat",
+    "section": "",
+    "text": "Easy-to-use interface\nSupports integration with various AI models\nReal-time chat capabilities\nOpen-source and customizable",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#developer-guide",
+    "href": "index.html#developer-guide",
+    "title": "gradiochat",
+    "section": "Developer Guide",
+    "text": "Developer Guide\nI built this using nbdev notebook development tutorial from the company fast.ai.\nI also used the uv python package and environment manager.\nOfficially nbdev doesn’t support uv. It works with conda or pip, preferably with a single environment for all your Python projects if I understand correctly. The nbdev package then handles the dependencies and such via the setings.ini and setup.py and requirements.txt. But don’t take my word for that, dive into the actual documentation.\nI stumbled into some quircks trying to combine nbdev and uv. Most of those are probably a result from nbdev needing settings.ini and/or settings.py, while uv uses pyproject.toml. All of this, is to say. You might possibly run into some issues running this package because I wanted to do something that’s not officially supported or possible.\nWhile developing I learned a few things that seemed to work after some struggles.\n\nMake sure to use Python 3.10 if you want to use Gradio. This is strange. With uv I can use 3.11 and Gradio just fine. But the moment I push to Github the nbdev CI action fails with the statement that my app can at most support 3.10.16. I think that is because in Github pip is used and not uv.\nI also think you need Python 3.10 if you want to deploy to HuggingSpaces. Lower is possible, higher is not yet supported by HuggingSpaces.\nI thought that we needed Python 3.11 to be able to combine nbdev with uv. But I haven’t noticed any issues yet.\n\n\nInstall gradiochat in Development mode\n# make sure gradiochat package is installed in development mode\n$ pip install -e .\n\n# make changes under nbs/ directory\n# ...\n\n# compile to have changes apply to gradiochat\n$ nbdev_prepare",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "gradiochat",
+    "section": "Usage",
+    "text": "Usage\n\nInstallation\nInstall latest from the GitHub repository:\n$ pip install git+https://github.com/Hopsakee/gradiochat.git\nor from pypi\n$ pip install gradiochat\n\n\nDocumentation\nDocumentation can be found hosted on this GitHub repository’s pages. Additionally you can find package manager specific guidelines on pypi respectively.",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "gradiochat",
+    "section": "How to use",
+    "text": "How to use\nThis comprehensive guide explains how to use the GradioChat package to create customizable LLM-powered chat applications with Gradio. GradioChat provides a simple yet powerful framework for building chat interfaces that can connect to various language models.\n\nInstall\nInstall the package using pip or uv using the explanation above.\n\n\nQuick start\nHere’s a minimal example to get you started.\n\nfrom gradiochat.config import ModelConfig, ChatAppConfig\nfrom gradiochat.ui import create_chat_app\nfrom pathlib import Path\n\n# Create model configuration\nmodel_config = ModelConfig(\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.2\",\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\"  # Optional: Set in .env file or environment\n)\n\n# Create chat application configuration\nconfig = ChatAppConfig(\n    app_name=\"My Chat App\",\n    description=\"A simple chat application powered by Mistral\",\n    system_prompt=\"You are a helpful assistant.\",\n    model=model_config\n)\n\n# Create and launch the chat application\napp = create_chat_app(config)\napp.build_interface().launch()\n\n/home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.\n  chatbot = gr.Chatbot(\n\n\n* Running on local URL:  http://127.0.0.1:7860\n\nTo create a public link, set `share=True` in `launch()`.\n\n\n\n\n\n\n\n\n\n\nConfiguration\nThe core of GradioChat is its configuration system which uses Pydantic for validation.\n\nModelConfig\nThe ModelConfig class defines how to connect to a language model:\n\nfrom gradiochat.config import ModelConfig\n\n# HuggingFace model\nhf_model = ModelConfig(\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.2\",\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\",  # Will read from environment variable\n    api_base_url=None,  # Optional: Custom API endpoint\n    max_tokens=1024,\n    temperature=0.7\n)\n\n\n\n\nMessage\nThe Message class represents a single message in a conversation:\n\nfrom gradiochat.config import Message\n\n# Create a system message\nsystem_msg = Message(\n    role=\"system\",\n    content=\"You are a helpful assistant.\"\n)\n\n# Create a user message\nuser_msg = Message(\n    role=\"user\",\n    content=\"Hello, can you help me with Python?\"\n)\n\n# Create an assistant message\nassistant_msg = Message(\n    role=\"assistant\",\n    content=\"Of course! I'd be happy to help with Python. What would you like to know?\"\n)\n\n\n\nChatAppConfig\nThe ChatAppConfig class is the main configuration for your chat application:\n\nfrom gradiochat.config import ChatAppConfig, ModelConfig\nfrom pathlib import Path\n\n# Create model configuration\nmodel_config = ModelConfig(\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.2\",\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\"\n)\n\n# Create chat application configuration\nconfig = ChatAppConfig(\n    app_name=\"Python Helper\",\n    description=\"Get help with Python programming\",\n    system_prompt=\"You are a Python expert who helps users with programming questions.\",\n    starter_prompt=\"Hello! I'm your Python assistant. Ask me any Python-related question.\",\n    context_files=[Path(\"docs/python_tips.md\")],  # Optional: Add context from files\n    model=model_config,\n    theme=None,  # Optional: Custom Gradio theme\n    logo_path=Path(\"assets/logo.png\"),  # Optional: Path to logo image\n    show_system_prompt=True,  # Whether to show system prompt in UI\n    show_context=True  # Whether to show context in UI\n)",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#creating-a-chat-application",
+    "href": "index.html#creating-a-chat-application",
+    "title": "gradiochat",
+    "section": "Creating a Chat Application",
+    "text": "Creating a Chat Application\n\nBasic Usage\nThe simplest way to create a chat application is using the create_chat_app function:\n\nfrom gradiochat.ui import create_chat_app\nfrom gradiochat.config import ModelConfig, ChatAppConfig\n\n# Create configurations\nmodel_config = ModelConfig(\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.2\",\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\"\n)\n\nconfig = ChatAppConfig(\n    app_name=\"My Chat App\",\n    description=\"A simple chat application\",\n    system_prompt=\"You are a helpful assistant.\",\n    model=model_config\n)\n\n# Create and launch the app\napp = create_chat_app(config)\napp.build_interface().launch()\n\n/home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.\n  chatbot = gr.Chatbot(\n\n\n* Running on local URL:  http://127.0.0.1:7861\n\nTo create a public link, set `share=True` in `launch()`.\n\n\n\n\n\n\n\n\n\n\nUsing Environment Variables\nFor API keys, it’s recommended to use environment variables. You can create a ’ .env file in your project root:\nHF_API_KEY=your_huggingface_api_key_here\nThen load it in your application:\nfrom dotenv import load_dotenv\n\nload_dotenv()  # Load environment variables from .env file\n\n# Now create your ModelConfig with api_key_env_var\n\n\nAdding Context Files\nYou can provide additional context to your LLM by adding markdown files:\nfrom pathlib import Path\n\nconfig = ChatAppConfig(\n    # ... other parameters\n    context_files=[\n        Path(\"docs/product_info.md\"),\n        Path(\"docs/faq.md\")\n    ],\n    # ... other parameters\n)",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#customization",
+    "href": "index.html#customization",
+    "title": "gradiochat",
+    "section": "Customization",
+    "text": "Customization\n\nCustom Themes\nYou can customize the appearance of your chat application using Gradio themes. You can build those yourself with help from the gradio_themebuilder or you can use one of the predefined themes in gradio_themes.\nimport gradio as gr\n\nmy_theme = gr.themes.Base(\n    primary_hue=\"fuchsia\",\n)\n\n# Use the theme in your config\nconfig = ChatAppConfig(\n    # ... other parameters\n    theme=my_theme,\n    # ... other parameters\n)",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#api-reference",
+    "href": "index.html#api-reference",
+    "title": "gradiochat",
+    "section": "API Reference",
+    "text": "API Reference\n\nBaseChatApp\nThe BaseChatApp class provides the core functionality for chat applications:\nfrom gradiochat.app import BaseChatApp\nfrom gradiochat.config import ChatAppConfig\n\n# Create configuration\nconfig = ChatAppConfig(...)\n\n# Create base app\nbase_app = BaseChatApp(config)\n\n# Generate a response\nresponse = base_app.generate_response(\"What is Python?\")\n\n# Generate a streaming response\n# IMPORTANT: I don't actually think this already works. To be continued.\nfor chunk in base_app.generate_stream(\"Tell me about Python\"):\n    print(chunk, end=\"\", flush=True)\n\n\nGradioChat\nThe GradioChat class provides the Gradio UI for the chat application:\nfrom gradiochat.ui import GradioChat\nfrom gradiochat.app import BaseChatApp\n\n# Create base app\nbase_app = BaseChatApp(config)\n\n# Create Gradio interface\ngradio_app = GradioChat(base_app)\n\n# Build and launch the interface\ninterface = gradio_app.build_interface()\ninterface.launch()\n\n\nLLM Clients\nThe package currently supports HuggingFace models through the HuggingFaceClient class:\nfrom gradiochat.app import HuggingFaceClient\nfrom gradiochat.config import ModelConfig, Message\n\n# Create model config\nmodel_config = ModelConfig(\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.2\",\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\"\n)\n\n# Create client\nclient = HuggingFaceClient(model_config)\n\n# Generate a completion\nmessages = [\n    Message(role=\"system\", content=\"You are a helpful assistant.\"),\n    Message(role=\"user\", content=\"What is Python?\")\n]\nresponse = client.chat_completion(messages)",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "index.html#complete-example",
+    "href": "index.html#complete-example",
+    "title": "gradiochat",
+    "section": "Complete Example",
+    "text": "Complete Example\nHere’s a complete example that demonstrates most features:\n\nimport gradio as gr\nfrom gradiochat.config import ModelConfig, ChatAppConfig\nfrom gradiochat.gradio_themes import themeWDODelta\nfrom pathlib import Path\nfrom dotenv import load_dotenv\n\n# Load environment variables\nload_dotenv()\n\n# Create a custom theme\ntheme = themeWDODelta\n\n# Create model configuration\nmodel_config = ModelConfig(\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.2\",\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\",\n    max_tokens=2048,\n    temperature=0.8\n)\n\n# Create chat application configuration\nconfig = ChatAppConfig(\n    app_name=\"Python Expert\",\n    description=\"Get expert help with Python programming\",\n    system_prompt=\"You are a Python expert who helps users with programming questions. Provide clear, concise, and accurate information.\",\n    starter_prompt=\"Hello! I'm your Python assistant. How can I help you today?\",\n    context_files=[Path(\"docs/python_reference.md\")],\n    model=model_config,\n    theme=theme,\n    logo_path=Path(\"assets/python_logo.png\"),\n    show_system_prompt=True,\n    show_context=True\n)\n\n# Create and launch the chat application\nfrom gradiochat.ui import create_chat_app\napp = create_chat_app(config)\napp.build_interface().launch(share=True)\n\n/home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.\n  chatbot = gr.Chatbot(\n\n\n* Running on local URL:  http://127.0.0.1:7863\n* Running on public URL: https://f1f738822af7fb3232.gradio.live\n\nThis share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from the terminal in the working directory to deploy to Hugging Face Spaces (https://huggingface.co/spaces)\n\n\n\n\n\n\n\n\n\ngr.close_all()",
+    "crumbs": [
+      "gradiochat"
+    ]
+  },
+  {
+    "objectID": "ui.html",
+    "href": "ui.html",
+    "title": "User Interface",
+    "section": "",
+    "text": "A class that creates and manages a Gradio-based chat interface.\nThis class provides a web-based user interface for interacting with chat models. It handles the display of messages, streaming of responses, and various UI elements like buttons for sending messages, clearing chat history, and exporting conversations.\nAttributes:\n\napp (BaseChatApp): The underlying chat application that handles message processing. It accepts an instance of the class BaseChatApp which is defined in the module app.py.\ninterface (gr.Blocks, optional): The Gradio interface object once built.\n\nThe interface is built within this class with the build_interface method.\n\n\n\n\n GradioChat (app:gradiochat.app.BaseChatApp)\n\nGradio interface for the chat application\n\n\nBuild and return the Gradio interface.\nThis method constructs the complete Gradio UI with all components including: - App title and logo - Chat display area - Message input field - Control buttons (Send, Clear) - Export functionality - System information display\nThe interface is configured according to the settings in the app’s config.\nReturns: gr.Blocks: The constructed Gradio interface object.\n\nLearned: @patch\nThis is a decorator used in nbdev to make it possible to spread the methods and properties of a class over multiple notebook cells. By using @patch and setting self:&lt;classname&gt; the nbdev style written code ‘knows’ to which class the method or property belongs.\n\n\n\n\n\n\n\n GradioChat.build_interface ()\n\nBuild and return the Gradio interface\n\n\n\n@patch\ndef launch(self:GradioChat, **kwargs):\n    \"\"\"Launch the Gradio interface\"\"\"\n    if self.interface is None:\n        self.build_interface()\n    \n    return self.interface.launch(**kwargs)",
+    "crumbs": [
+      "User Interface"
+    ]
+  },
+  {
+    "objectID": "ui.html#create-the-class-for-the-user-interface",
+    "href": "ui.html#create-the-class-for-the-user-interface",
+    "title": "User Interface",
+    "section": "",
+    "text": "A class that creates and manages a Gradio-based chat interface.\nThis class provides a web-based user interface for interacting with chat models. It handles the display of messages, streaming of responses, and various UI elements like buttons for sending messages, clearing chat history, and exporting conversations.\nAttributes:\n\napp (BaseChatApp): The underlying chat application that handles message processing. It accepts an instance of the class BaseChatApp which is defined in the module app.py.\ninterface (gr.Blocks, optional): The Gradio interface object once built.\n\nThe interface is built within this class with the build_interface method.\n\n\n\n\n GradioChat (app:gradiochat.app.BaseChatApp)\n\nGradio interface for the chat application\n\n\nBuild and return the Gradio interface.\nThis method constructs the complete Gradio UI with all components including: - App title and logo - Chat display area - Message input field - Control buttons (Send, Clear) - Export functionality - System information display\nThe interface is configured according to the settings in the app’s config.\nReturns: gr.Blocks: The constructed Gradio interface object.\n\nLearned: @patch\nThis is a decorator used in nbdev to make it possible to spread the methods and properties of a class over multiple notebook cells. By using @patch and setting self:&lt;classname&gt; the nbdev style written code ‘knows’ to which class the method or property belongs.\n\n\n\n\n\n\n\n GradioChat.build_interface ()\n\nBuild and return the Gradio interface\n\n\n\n@patch\ndef launch(self:GradioChat, **kwargs):\n    \"\"\"Launch the Gradio interface\"\"\"\n    if self.interface is None:\n        self.build_interface()\n    \n    return self.interface.launch(**kwargs)",
+    "crumbs": [
+      "User Interface"
+    ]
+  },
+  {
+    "objectID": "ui.html#create-chat-app-from-the-class-gradiochat",
+    "href": "ui.html#create-chat-app-from-the-class-gradiochat",
+    "title": "User Interface",
+    "section": "Create chat app from the class GradioChat",
+    "text": "Create chat app from the class GradioChat\nLaunch the Gradio interface.\nThis method builds the interface if it hasn’t been built yet and then launches the Gradio web server to make the interface accessible.\n\n\ncreate_chat_app\n\n create_chat_app (config:gradiochat.config.ChatAppConfig)\n\nCreate a complete chat application from a configuration\n\n\n\n\n\n\n\n\n\nType\nDetails\n\n\n\n\nconfig\nChatAppConfig\nInstance from the config.ChatAppConfig module\n\n\nReturns\nGradioChat",
+    "crumbs": [
+      "User Interface"
+    ]
+  },
+  {
+    "objectID": "ui.html#example",
+    "href": "ui.html#example",
+    "title": "User Interface",
+    "section": "Example",
+    "text": "Example\nBelow is an example to create a simple chat UI wich follows more or less the styling confentions from Waterschap Drents Overijsselse Delta.\n\n# Test cell - not for export\nthemeWDODelta = gr.themes.Base(\n    primary_hue=gr.themes.Color(c100=\"#ffedd5\", c200=\"#ffddb3\", c300=\"#fdba74\", c400=\"#f29100\", c50=\"#fff7ed\", c500=\"#f97316\", c600=\"#ea580c\", c700=\"#c2410c\", c800=\"#9a3412\", c900=\"#7c2d12\", c950=\"#6c2e12\"),\n    neutral_hue=\"slate\",\n    radius_size=\"sm\",\n    font=['VivalaSansRound', 'ui-sans-serif', 'system-ui', 'sans-serif'],\n).set(\n    embed_radius='*radius_xs',\n    border_color_accent='*primary_400',\n    border_color_accent_dark='*secondary_700',\n    border_color_primary='*secondary_700',\n    border_color_primary_dark='*secondary_700',\n    color_accent='*primary_400',\n    shadow_drop='*shadow_drop_lg',\n    button_primary_background_fill='*primary_400',\n    button_primary_background_fill_dark='*primary_400',\n    button_primary_background_fill_hover='*secondary_700',\n    button_primary_background_fill_hover_dark='*secondary_700',\n    button_primary_border_color='*secondary_700',\n    button_primary_border_color_dark='*secondary_700'\n)\n\n# Create a test configuration\ntest_config = ChatAppConfig(\n    app_name=\"Job Description Assistant\",\n    description=\"Chat with an AI to create better job descriptions\",\n    system_prompt=\"You are an assistant that helps users create professional job descriptions. Ask questions to gather information about the position and responsibilities.\",\n    starter_prompt=\"Hello! I'm your job description assistant. Tell me about the position you'd like to create a description for.\",\n    model=ModelConfig(\n        model_name=\"mistralai/Mistral-7B-Instruct-v0.3\",\n        api_key_env_var=\"HF_API_KEY\"\n    ),\n    theme=themeWDODelta,\n    logo_path=Path(\"../data/wdod_logo.svg\")\n)\n\n# Create and launch the app\napp = create_chat_app(test_config)\napp.launch(share=True, # Set share=False if you don't want a public URL\n        pwa=True # Set pwa=False if you don't want a progressive web app.\n        )\n\n/tmp/ipykernel_10274/2673572980.py:32: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.\n  chatbot = gr.Chatbot(\n\n\n* Running on local URL:  http://127.0.0.1:7861\n* Running on public URL: https://ef68094b149ba722d2.gradio.live\n\nThis share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from the terminal in the working directory to deploy to Hugging Face Spaces (https://huggingface.co/spaces)\n\n\n\n\n\n\n\n\nClose all Gradio clients and ports\n\ngr.close_all()\n\n\n---------------------------------------------------------------------------\nNameError                                 Traceback (most recent call last)\nCell In[1], line 1\n----&gt; 1 gr.close_all()\n\nNameError: name 'gr' is not defined",
+    "crumbs": [
+      "User Interface"
+    ]
+  },
+  {
+    "objectID": "gradio_themesbuilder.html",
+    "href": "gradio_themesbuilder.html",
+    "title": "Gradio theme builder",
+    "section": "",
+    "text": "The following command starts a convenient user interface to build the code for the appearance of the Gradio user interface. Usually this will be running on your local device on http://127.0.0.1:7860. It can be accessed via your browser. There’s also an online version available at Gradio docs Theming guide and HuggingFace spaces: Theme Builder. But both of these versions are less responsive than running it locally through this module.\n\ngr.close_all()",
+    "crumbs": [
+      "Gradio theme builder"
+    ]
+  },
+  {
+    "objectID": "gradio_themesbuilder.html#start-theme-builder",
+    "href": "gradio_themesbuilder.html#start-theme-builder",
+    "title": "Gradio theme builder",
+    "section": "",
+    "text": "The following command starts a convenient user interface to build the code for the appearance of the Gradio user interface. Usually this will be running on your local device on http://127.0.0.1:7860. It can be accessed via your browser. There’s also an online version available at Gradio docs Theming guide and HuggingFace spaces: Theme Builder. But both of these versions are less responsive than running it locally through this module.\n\ngr.close_all()",
+    "crumbs": [
+      "Gradio theme builder"
+    ]
+  },
+  {
+    "objectID": "gradio_themes.html",
+    "href": "gradio_themes.html",
+    "title": "Gradio themes",
+    "section": "",
+    "text": "Theme that mimics the WDODelta styleguide",
+    "crumbs": [
+      "Gradio themes"
+    ]
+  },
+  {
+    "objectID": "app.html",
+    "href": "app.html",
+    "title": "App logic",
+    "section": "",
+    "text": "I used the Protocol and runtime_checkable for the first time. Here’s a short explainer.\n\n\nProtocols were introduced in Python 3.8 through PEP 544 and are part of the typing module. They provide a way to define interfaces that classes can implement without explicitly inheriting from them - this is called “structural typing” or “duck typing.”\n\n\n\nAbstract Base Classes (Traditional Approach): - Require explicit inheritance (class MyClass(AbstractBaseClass):) - Use the @abstractmethod decorator to mark methods that must be implemented - Check for compatibility based on the class hierarchy (nominal typing) - Enforce implementation at class definition time\nProtocols (New Approach): - Don’t require inheritance - classes just need to implement the required methods - Use the Protocol class and @runtime_checkable decorator - Check for compatibility based on method signatures (structural typing) - Can check compatibility at runtime with isinstance() if marked as @runtime_checkable\n\n\n\nIn our code:\n@runtime_checkable\nclass LLMClientProtocol(Protocol):\n    def chat_completion(self, messages: List[Message], **kwargs) -&gt; str:\n        ...\n    \n    def chat_completion_stream(self, messages: List[Message], **kwargs) -&gt; Generator[str, None, None]:\n        ...\nThis defines an interface that says “any class with methods named chat_completion and chat_completion_stream with these signatures is considered compatible with LLMClientProtocol.”\nThe ... in the method bodies is a special syntax that means “this method is required but not implemented here.” It’s similar to pass but specifically for protocol definitions.\n\n\n\n\nFlexibility: We can create any class that implements these methods, and it will be compatible with LLMClientProtocol without explicitly inheriting from it.\nEasy Testing: We can create mock implementations that automatically satisfy the protocol by just implementing the required methods.\nType Checking: Tools like mypy can verify that our classes implement all required methods with the correct signatures.\nRuntime Checking: With @runtime_checkable, we can use isinstance(obj, LLMClientProtocol) to check if an object implements the protocol.\n\n\n\n\ndef process_with_any_llm_client(client: LLMClientProtocol, messages: List[Message]):\n    # This function will accept any object that has the required methods,\n    # regardless of its class hierarchy\n    response = client.chat_completion(messages)\n    return response\nThis would accept our HuggingFaceClient or any other class that implements the required methods, without forcing them to inherit from a common base class.",
+    "crumbs": [
+      "App logic"
+    ]
+  },
+  {
+    "objectID": "app.html#explanation-of-new-code",
+    "href": "app.html#explanation-of-new-code",
+    "title": "App logic",
+    "section": "",
+    "text": "I used the Protocol and runtime_checkable for the first time. Here’s a short explainer.\n\n\nProtocols were introduced in Python 3.8 through PEP 544 and are part of the typing module. They provide a way to define interfaces that classes can implement without explicitly inheriting from them - this is called “structural typing” or “duck typing.”\n\n\n\nAbstract Base Classes (Traditional Approach): - Require explicit inheritance (class MyClass(AbstractBaseClass):) - Use the @abstractmethod decorator to mark methods that must be implemented - Check for compatibility based on the class hierarchy (nominal typing) - Enforce implementation at class definition time\nProtocols (New Approach): - Don’t require inheritance - classes just need to implement the required methods - Use the Protocol class and @runtime_checkable decorator - Check for compatibility based on method signatures (structural typing) - Can check compatibility at runtime with isinstance() if marked as @runtime_checkable\n\n\n\nIn our code:\n@runtime_checkable\nclass LLMClientProtocol(Protocol):\n    def chat_completion(self, messages: List[Message], **kwargs) -&gt; str:\n        ...\n    \n    def chat_completion_stream(self, messages: List[Message], **kwargs) -&gt; Generator[str, None, None]:\n        ...\nThis defines an interface that says “any class with methods named chat_completion and chat_completion_stream with these signatures is considered compatible with LLMClientProtocol.”\nThe ... in the method bodies is a special syntax that means “this method is required but not implemented here.” It’s similar to pass but specifically for protocol definitions.\n\n\n\n\nFlexibility: We can create any class that implements these methods, and it will be compatible with LLMClientProtocol without explicitly inheriting from it.\nEasy Testing: We can create mock implementations that automatically satisfy the protocol by just implementing the required methods.\nType Checking: Tools like mypy can verify that our classes implement all required methods with the correct signatures.\nRuntime Checking: With @runtime_checkable, we can use isinstance(obj, LLMClientProtocol) to check if an object implements the protocol.\n\n\n\n\ndef process_with_any_llm_client(client: LLMClientProtocol, messages: List[Message]):\n    # This function will accept any object that has the required methods,\n    # regardless of its class hierarchy\n    response = client.chat_completion(messages)\n    return response\nThis would accept our HuggingFaceClient or any other class that implements the required methods, without forcing them to inherit from a common base class.",
+    "crumbs": [
+      "App logic"
+    ]
+  },
+  {
+    "objectID": "app.html#define-the-general-llmclientprotocol-structure",
+    "href": "app.html#define-the-general-llmclientprotocol-structure",
+    "title": "App logic",
+    "section": "Define the general LLMClientProtocol structure",
+    "text": "Define the general LLMClientProtocol structure\nWhich means it should have the methods defined in LLMClientProtocol.\n\n\nLLMClientProtocol\n\n LLMClientProtocol (*args, **kwargs)\n\nProtocol defining the interface for LLM clients",
+    "crumbs": [
+      "App logic"
+    ]
+  },
+  {
+    "objectID": "app.html#define-the-huggingfaceclient",
+    "href": "app.html#define-the-huggingfaceclient",
+    "title": "App logic",
+    "section": "Define the HuggingFaceClient",
+    "text": "Define the HuggingFaceClient\nThis should at least follow the structure of LLMClientProtocol but can of course be expanded.\n\n\nHuggingFaceClient\n\n HuggingFaceClient (model_config:gradiochat.config.ModelConfig)\n\nClient for interacting with HuggingFace models",
+    "crumbs": [
+      "App logic"
+    ]
+  },
+  {
+    "objectID": "app.html#create-the-llm-client",
+    "href": "app.html#create-the-llm-client",
+    "title": "App logic",
+    "section": "Create the LLM client",
+    "text": "Create the LLM client\nThis function creates the client using the available LLM Client classes. It gets the provider from the model_config. If it finds a LLM Client Class for this provider, it returns that client. If it doesn’t find a LLM Client Class for that provider, it returns a ValueError.\n\n\ncreate_llm_client\n\n create_llm_client (model_config:gradiochat.config.ModelConfig)\n\nFactory function to create an LLM client based on the provider.",
+    "crumbs": [
+      "App logic"
+    ]
+  },
+  {
+    "objectID": "app.html#the-internal-logic-of-the-chat-app",
+    "href": "app.html#the-internal-logic-of-the-chat-app",
+    "title": "App logic",
+    "section": "The internal logic of the chat app",
+    "text": "The internal logic of the chat app\nNow the BaseChatApp class is defined. This class is used to instantiate the properties en methods for the internal workings of the chat app. The UI is defined in the ui module.\n\n\nBaseChatApp\n\n BaseChatApp (config:gradiochat.config.ChatAppConfig)\n\nBase class for creating configurable chat applications with Gradio\n\n# Create a test model config\ntest_config = ModelConfig(\n    # model_name=\"mistralai/Mistral-Nemo-Instruct-2407\",\n    model_name=\"mistralai/Mistral-7B-Instruct-v0.3\", # \"Qwen/QwQ-32B\" is another possibility, but with vision you need another messages format\n    provider=\"huggingface\",\n    api_key_env_var=\"HF_API_KEY\",\n    api_base_url=\"https://router.huggingface.co/hf-inference/v1\",\n    max_tokens=100,\n    temperature=0.7\n)\n\n# Create the client\nclient = create_llm_client(test_config)\n\ntest_messages = [\n    Message(role=\"system\", content=\"You are Aurelius Augustinus, helping me to think deeply and be humble and thankfull.\"),\n    Message(role=\"user\", content=\"Why should I engage with the people around me?\")\n]\n# Test with a simple prompt\ntry:\n    response = client.chat_completion(test_messages)\n    print(f\"Response received: {response[:100]}...\")\nexcept Exception as e:\n    print(f\"Error: {e}\")\n\n# Test with overriden parameters\ntry:\n    print(\"\\nTesting with overridden parameters:\")\n    response = client.chat_completion(test_messages, max_tokens=50, temperature=0.9)\n    print(f\"Response: {response[:100]}...\")  # Show first 100 chars\nexcept Exception as e:\n    print(f\"Error: {e}\")\n\nResponse received: As a philosopher and theologian, I, Aurelius Augustinus, believe that engaging with people around us...\n\nTesting with overridden parameters:\nResponse: As a thoughtful individual who seeks wisdom and understanding, engaging with the people around you s...",
+    "crumbs": [
+      "App logic"
+    ]
+  },
+  {
+    "objectID": "config.html",
+    "href": "config.html",
+    "title": "Configuration",
+    "section": "",
+    "text": "Pydantic vs Dataclasses: Pydantic creates classes similar to Python’s dataclasses but with additional features. The key differences are that Pydantic provides data validation, type coercion, and more robust error handling. It will automatically validate data during initialization and conversion.\nPydantic and typing: Pydantic leverages Python’s standard typing system but adds its own validation on top. It uses Python’s type hints to know what types to validate against.\nThe “…” placeholder: The ellipsis (…) is a special value in Pydantic that indicates a required field. It means “this field must be provided when creating an instance” - there’s no default value. When you create a ModelConfig instance, you’ll need to provide a value for model_name.\n@property usage: The @property decorator creates a getter method that’s accessed like an attribute. In our case, api_key looks like a normal attribute but when accessed, it runs the method to retrieve the value from environment variables. This is a clean way to avoid storing sensitive information in the object itself.\nField from pydantic can be used to add extra information and metadata to inform the reader and/or do data validation.",
+    "crumbs": [
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "config.html#some-lessons-and-clarification-about-the-used-code",
+    "href": "config.html#some-lessons-and-clarification-about-the-used-code",
+    "title": "Configuration",
+    "section": "",
+    "text": "Pydantic vs Dataclasses: Pydantic creates classes similar to Python’s dataclasses but with additional features. The key differences are that Pydantic provides data validation, type coercion, and more robust error handling. It will automatically validate data during initialization and conversion.\nPydantic and typing: Pydantic leverages Python’s standard typing system but adds its own validation on top. It uses Python’s type hints to know what types to validate against.\nThe “…” placeholder: The ellipsis (…) is a special value in Pydantic that indicates a required field. It means “this field must be provided when creating an instance” - there’s no default value. When you create a ModelConfig instance, you’ll need to provide a value for model_name.\n@property usage: The @property decorator creates a getter method that’s accessed like an attribute. In our case, api_key looks like a normal attribute but when accessed, it runs the method to retrieve the value from environment variables. This is a clean way to avoid storing sensitive information in the object itself.\nField from pydantic can be used to add extra information and metadata to inform the reader and/or do data validation.",
+    "crumbs": [
+      "Configuration"
+    ]
+  },
+  {
+    "objectID": "config.html#the-configuration-for-the-workings-of-the-llm-chatbot",
+    "href": "config.html#the-configuration-for-the-workings-of-the-llm-chatbot",
+    "title": "Configuration",
+    "section": "The configuration for the workings of the LLM chatbot",
+    "text": "The configuration for the workings of the LLM chatbot\nFirst the configuration for the LLM model to use in the ModelConfig.\n\n\nModelConfig\n\n ModelConfig (model_name:str, provider:str='huggingface',\n              api_key_env_var:Optional[str]=None,\n              api_base_url:Optional[str]=None, max_tokens:int=1024,\n              temperature:float=0.7,\n              stop_sequences:Optional[List[str]]=['\\nUser:',\n              '&lt;|endoftext|&gt;'])\n\nConfiguration for the LLM model\nNext the configuration of the Message system\n\n\n\nMessage\n\n Message (role:Literal['system','user','assistant'], content:str)\n\nA message in a conversation\nThen the configuration for the chat implementation. Making sure the application can handle: - system prompt - context if applicable - a start ‘user’ prompt if applicable - user input\nThe other settings that are available in this class can easily be infered from the description in the ChatAppConfig class itself.\n\n\n\nChatAppConfig\n\n ChatAppConfig (app_name:str, description:str='', system_prompt:str,\n                starter_prompt:Optional[str]=None,\n                context_files:List[pathlib.Path]=[],\n                model:__main__.ModelConfig, theme:Optional[Any]=None,\n                logo_path:Optional[pathlib.Path]=None,\n                show_system_prompt:bool=True, show_context:bool=True)\n\nMain configuration for a chat application\nAn example configuration for a chat application:\n\ntest_config = ChatAppConfig(\n    app_name=\"Test App\",\n    system_prompt=\"You are a helpful assistant.\",\n    model=ModelConfig(\n        model_name=\"gpt-3.5-turbo\",\n        api_key_env_var=\"HF_API_KEY\",\n    )\n)\n\nprint(test_config.model_dump_json(indent=2))\n\nprint(f\"API Key available: {'Yes' if test_config.model.api_key else 'No'}\")\n\n{\n  \"app_name\": \"Test App\",\n  \"description\": \"\",\n  \"system_prompt\": \"You are a helpful assistant.\",\n  \"starter_prompt\": null,\n  \"context_files\": [],\n  \"model\": {\n    \"model_name\": \"gpt-3.5-turbo\",\n    \"provider\": \"huggingface\",\n    \"api_key_env_var\": \"HF_API_KEY\",\n    \"api_base_url\": null,\n    \"max_tokens\": 1024,\n    \"temperature\": 0.7,\n    \"stop_sequences\": [\n      \"\\nUser:\",\n      \"&lt;|endoftext|&gt;\"\n    ]\n  },\n  \"theme\": null,\n  \"logo_path\": null,\n  \"show_system_prompt\": true,\n  \"show_context\": true\n}\nAPI Key available: Yes",
+    "crumbs": [
+      "Configuration"
+    ]
+  }
+]
