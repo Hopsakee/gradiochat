@@ -8,7 +8,7 @@ __all__ = ['themeWDODelta']
 # %% ../../nbs/98_gradio_themes.ipynb 3
 import gradio as gr
 
-# %% ../../nbs/98_gradio_themes.ipynb 4
+# %% ../../nbs/98_gradio_themes.ipynb 5
 themeWDODelta = gr.themes.Base(
     primary_hue=gr.themes.Color(c100="#ffedd5", c200="#ffddb3", c300="#fdba74", c400="#f29100", c50="#fff7ed", c500="#f97316", c600="#ea580c", c700="#c2410c", c800="#9a3412", c900="#7c2d12", c950="#6c2e12"),
     neutral_hue="slate",

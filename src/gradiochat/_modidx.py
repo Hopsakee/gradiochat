@@ -34,7 +34,6 @@ d = { 'settings': { 'branch': 'main',
             'gradiochat.ui': { 'gradiochat.ui.GradioChat': ('ui.html#gradiochat', 'gradiochat/ui.py'),
                                'gradiochat.ui.GradioChat.__init__': ('ui.html#gradiochat.__init__', 'gradiochat/ui.py'),
                                'gradiochat.ui.GradioChat.build_interface': ('ui.html#gradiochat.build_interface', 'gradiochat/ui.py'),
-                               'gradiochat.ui.GradioChat.launch': ('ui.html#gradiochat.launch', 'gradiochat/ui.py'),
                                'gradiochat.ui.GradioChat.respond': ('ui.html#gradiochat.respond', 'gradiochat/ui.py'),
                                'gradiochat.ui.GradioChat.respond_stream': ('ui.html#gradiochat.respond_stream', 'gradiochat/ui.py'),
                                'gradiochat.ui.create_chat_app': ('ui.html#create_chat_app', 'gradiochat/ui.py')}}}

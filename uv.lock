@@ -472,6 +472,7 @@ name = "gradiochat"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "fastcore" },
     { name = "gradio" },
     { name = "openai" },
     { name = "pydantic" },
@@ -487,6 +488,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "fastcore", specifier = ">=1.7.29" },
     { name = "gradio", specifier = ">=5.20.1" },
     { name = "openai", specifier = ">=1.65.4" },
     { name = "pydantic", specifier = ">=2.10.6" },
