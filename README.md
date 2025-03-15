@@ -71,15 +71,6 @@ app = create_chat_app(config)
 app.build_interface().launch()
 ```
 
-    /home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.
-      chatbot = gr.Chatbot(
-
-    * Running on local URL:  http://127.0.0.1:7860
-
-    To create a public link, set `share=True` in `launch()`.
-
-<div><iframe src="http://127.0.0.1:7860/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
-
 ### Configuration
 
 The core of GradioChat is its configuration system which uses Pydantic
@@ -341,15 +332,7 @@ app = create_chat_app(config)
 app.build_interface().launch(share=True)
 ```
 
-    /home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.
-      chatbot = gr.Chatbot(
-
-    * Running on local URL:  http://127.0.0.1:7863
-    * Running on public URL: https://f1f738822af7fb3232.gradio.live
-
-    This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from the terminal in the working directory to deploy to Hugging Face Spaces (https://huggingface.co/spaces)
-
-<div><iframe src="https://f1f738822af7fb3232.gradio.live" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
+To close all existing clients.
 
 ``` python
 gr.close_all()

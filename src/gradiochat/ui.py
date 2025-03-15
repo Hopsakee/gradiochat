@@ -13,7 +13,7 @@ from .config import ChatAppConfig, ModelConfig
 from .app import BaseChatApp
 from pathlib import Path
 
-# %% ../../nbs/02_ui.ipynb 5
+# %% ../../nbs/02_ui.ipynb 6
 class GradioChat:
     """Gradio interface for the chat application"""
     
@@ -55,7 +55,7 @@ class GradioChat:
             # Yield empty message and updated history
             yield "", updated_history
 
-# %% ../../nbs/02_ui.ipynb 8
+# %% ../../nbs/02_ui.ipynb 9
 @patch
 def build_interface(self:GradioChat) -> gr.Blocks:
     """Build and return the Gradio interface"""
@@ -192,7 +192,7 @@ def build_interface(self:GradioChat) -> gr.Blocks:
         self.interface = interface
         return interface
 
-# %% ../../nbs/02_ui.ipynb 13
+# %% ../../nbs/02_ui.ipynb 14
 def create_chat_app(
         config: ChatAppConfig # Instance from the config.ChatAppConfig module
         ) -> GradioChat:

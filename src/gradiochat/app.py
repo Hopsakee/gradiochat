@@ -11,7 +11,7 @@ from openai import OpenAI
 
 from .config import ModelConfig, Message, ChatAppConfig
 
-# %% ../../nbs/01_app.ipynb 6
+# %% ../../nbs/01_app.ipynb 7
 @runtime_checkable
 class LLMClientProtocol(Protocol):
     """Protocol defining the interface for LLM clients"""
@@ -24,7 +24,7 @@ class LLMClientProtocol(Protocol):
         """Generate a streaming response from the LLM"""
         ...
 
-# %% ../../nbs/01_app.ipynb 8
+# %% ../../nbs/01_app.ipynb 9
 class HuggingFaceClient():
     """Client for interacting with HuggingFace models"""
     
@@ -65,7 +65,7 @@ class HuggingFaceClient():
         result = self.chat_completion(messages, **kwargs)
         yield result
 
-# %% ../../nbs/01_app.ipynb 9
+# %% ../../nbs/01_app.ipynb 10
 class TogetherAiClient():
     """Client for interacting with models through the TogetherAI API server
     We use the openai package"""
@@ -119,7 +119,7 @@ class TogetherAiClient():
                 yield token.choices[0].delta.content
            
 
-# %% ../../nbs/01_app.ipynb 11
+# %% ../../nbs/01_app.ipynb 12
 def create_llm_client(model_config: ModelConfig) -> LLMClientProtocol:
     """
     Factory function to create an LLM client based on the provider.
@@ -131,7 +131,7 @@ def create_llm_client(model_config: ModelConfig) -> LLMClientProtocol:
     else:
         raise ValueError(f"Unsupported provider: {model_config.provider}")
 
-# %% ../../nbs/01_app.ipynb 13
+# %% ../../nbs/01_app.ipynb 14
 class BaseChatApp:
     """Base class for creating configurable chat applications with Gradio"""
     
