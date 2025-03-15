@@ -10,72 +10,7 @@
 - Real-time chat capabilities
 - Open-source and customizable
 
-## Developer Guide
-
-I built this using `nbdev` [notebook development
-tutorial](https://nbdev.fast.ai/getting_started.html) from the company
-[fast.ai](https://www.fast.ai).
-
-I also used the `uv` [python package and environment
-manager](https://docs.astral.sh/uv/).
-
-Officially `nbdev` doesn’t support `uv`. It works with `conda` or `pip`,
-preferably with a single environment for all your Python projects if I
-understand correctly. The `nbdev` package then handles the dependencies
-and such via the `setings.ini` and `setup.py` and `requirements.txt`.
-But don’t take my word for that, dive into the actual documentation.
-
-I stumbled into some quircks trying to combine `nbdev` and `uv`. Most of
-those are probably a result from `nbdev` needing `settings.ini` and/or
-`settings.py`, while `uv` uses `pyproject.toml`. All of this, is to say.
-You might possibly run into some issues running this package because I
-wanted to do something that’s not officially supported or possible.
-
-While developing I learned a few things that seemed to work after some
-struggles.
-
-1.  Make sure to use Python 3.10 if you want to use Gradio. This is
-    strange. With `uv` I can use 3.11 and Gradio just fine. But the
-    moment I push to Github the `nbdev` CI action fails with the
-    statement that my app can at most support 3.10.16. I think that is
-    because in Github `pip` is used and not `uv`.
-2.  I also think you need Python 3.10 if you want to deploy to
-    HuggingSpaces. Lower is possible, higher is not yet supported by
-    HuggingSpaces.
-3.  I thought that we needed Python 3.11 to be able to combine `nbdev`
-    with `uv`. But I haven’t noticed any issues yet.
-
-### Install gradiochat in Development mode
-
-``` sh
-# make sure gradiochat package is installed in development mode
-$ pip install -e .
-
-# make changes under nbs/ directory
-# ...
-
-# compile to have changes apply to gradiochat
-$ nbdev_prepare
-```
-
-## Usage
-
-### Installation
-
-Install latest from the GitHub
-[repository](https://github.com/Hopsakee/gradiochat):
-
-``` sh
-$ pip install git+https://github.com/Hopsakee/gradiochat.git
-```
-
-or from [pypi](https://pypi.org/project/gradiochat/)
-
-``` sh
-$ pip install gradiochat
-```
-
-### Documentation
+## Documentation
 
 Documentation can be found hosted on this GitHub
 [repository](https://github.com/Hopsakee/gradiochat)’s
@@ -90,9 +25,22 @@ create customizable LLM-powered chat applications with Gradio.
 GradioChat provides a simple yet powerful framework for building chat
 interfaces that can connect to various language models.
 
-#### Install
+#### Installation
 
-Install the package using `pip` or `uv` using the explanation above.
+Install the package using `pip` or `uv` using the explanation below.
+
+Install latest from the GitHub
+[repository](https://github.com/Hopsakee/gradiochat):
+
+``` sh
+$ pip install git+https://github.com/Hopsakee/gradiochat.git
+```
+
+or from [pypi](https://pypi.org/project/gradiochat/)
+
+``` sh
+$ pip install gradiochat
+```
 
 #### Quick start
 
@@ -214,43 +162,6 @@ config = ChatAppConfig(
 
 ## Creating a Chat Application
 
-### Basic Usage
-
-The simplest way to create a chat application is using the
-create_chat_app function:
-
-``` python
-from gradiochat.ui import create_chat_app
-from gradiochat.config import ModelConfig, ChatAppConfig
-
-# Create configurations
-model_config = ModelConfig(
-    model_name="mistralai/Mistral-7B-Instruct-v0.2",
-    provider="huggingface",
-    api_key_env_var="HF_API_KEY"
-)
-
-config = ChatAppConfig(
-    app_name="My Chat App",
-    description="A simple chat application",
-    system_prompt="You are a helpful assistant.",
-    model=model_config
-)
-
-# Create and launch the app
-app = create_chat_app(config)
-app.build_interface().launch()
-```
-
-    /home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.
-      chatbot = gr.Chatbot(
-
-    * Running on local URL:  http://127.0.0.1:7861
-
-    To create a public link, set `share=True` in `launch()`.
-
-<div><iframe src="http://127.0.0.1:7861/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
-
 ### Using Environment Variables
 
 For API keys, it’s recommended to use environment variables. You can
@@ -292,7 +203,10 @@ config = ChatAppConfig(
 You can customize the appearance of your chat application using [Gradio
 themes](https://www.gradio.app/guides/theming-guide). You can build
 those yourself with help from the `gradio_themebuilder` or you can use
-one of the predefined themes in `gradio_themes`.
+one of the predefined themes in `gradio_themes`. The predifined themes
+are listed below.
+
+    - themeWDODelta
 
 ``` python
 import gradio as gr
@@ -439,4 +353,52 @@ app.build_interface().launch(share=True)
 
 ``` python
 gr.close_all()
+```
+
+## Developer Guide
+
+I built this using `nbdev` [notebook development
+tutorial](https://nbdev.fast.ai/getting_started.html) from the company
+[fast.ai](https://www.fast.ai).
+
+I also used the `uv` [python package and environment
+manager](https://docs.astral.sh/uv/).
+
+Officially `nbdev` doesn’t support `uv`. It works with `conda` or `pip`,
+preferably with a single environment for all your Python projects if I
+understand correctly. The `nbdev` package then handles the dependencies
+and such via the `setings.ini` and `setup.py` and `requirements.txt`.
+But don’t take my word for that, dive into the actual documentation.
+
+I stumbled into some quircks trying to combine `nbdev` and `uv`. Most of
+those are probably a result from `nbdev` needing `settings.ini` and/or
+`settings.py`, while `uv` uses `pyproject.toml`. All of this, is to say.
+You might possibly run into some issues running this package because I
+wanted to do something that’s not officially supported or possible.
+
+While developing I learned a few things that seemed to work after some
+struggles.
+
+1.  Make sure to use Python 3.10 if you want to use Gradio. This is
+    strange. With `uv` I can use 3.11 and Gradio just fine. But the
+    moment I push to Github the `nbdev` CI action fails with the
+    statement that my app can at most support 3.10.16. I think that is
+    because in Github `pip` is used and not `uv`.
+2.  I also think you need Python 3.10 if you want to deploy to
+    HuggingSpaces. Lower is possible, higher is not yet supported by
+    HuggingSpaces.
+3.  I thought that we needed Python 3.11 to be able to combine `nbdev`
+    with `uv`. But I haven’t noticed any issues yet.
+
+#### Install gradiochat in Development mode
+
+``` sh
+# make sure gradiochat package is installed in development mode
+$ pip install -e .
+
+# make changes under nbs/ directory
+# ...
+
+# compile to have changes apply to gradiochat
+$ nbdev_prepare
 ```
