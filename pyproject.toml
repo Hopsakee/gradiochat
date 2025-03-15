@@ -1,12 +1,17 @@
 [project]
 name = "gradiochat"
-version = "0.2.0"
-description = "Add your description here"
+version = "0.2.1"
+description = "App to easily create different Gradiochat apps with different context, system messages and gradio themes."
 readme = "README.md"
 authors = [
     { name = "Hopsakee", email = "jdejong@posteo.nl" }
 ]
 requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
 dependencies = [
     "fastcore>=1.7.29",
     "gradio>=5.20.1",
@@ -16,6 +21,10 @@ dependencies = [
     "requests>=2.32.3",
     "together>=1.4.6",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Hopsakee/gradiochat"
+Documentation = "https://hopsakee.github.io/gradiochat/"
 
 [project.scripts]
 gradiochat = "gradiochat:main"
