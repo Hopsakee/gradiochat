@@ -1,6 +1,6 @@
 [project]
 name = "gradiochat"
-version = "0.2.4"
+version = "0.2.5"
 description = "App to easily create different Gradiochat apps with different context, system messages and gradio themes."
 readme = "README.md"
 authors = [

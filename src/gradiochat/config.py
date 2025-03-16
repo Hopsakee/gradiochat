@@ -12,7 +12,6 @@ import os
 import gradio as gr
 from pathlib import Path
 from dotenv import load_dotenv
-from .utils import *
 
 # %% ../../nbs/00_config.ipynb 9
 class ModelConfig(BaseModel):

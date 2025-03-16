@@ -10,7 +10,6 @@ from typing import Protocol, runtime_checkable, Generator, List
 from openai import OpenAI
 
 from .config import ModelConfig, Message, ChatAppConfig
-from .utils import *
 
 # %% ../../nbs/01_app.ipynb 7
 @runtime_checkable

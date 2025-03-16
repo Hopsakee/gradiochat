@@ -42,8 +42,4 @@ d = { 'settings': { 'branch': 'main',
                                'gradiochat.ui.GradioChat.build_interface': ('ui.html#gradiochat.build_interface', 'gradiochat/ui.py'),
                                'gradiochat.ui.GradioChat.respond': ('ui.html#gradiochat.respond', 'gradiochat/ui.py'),
                                'gradiochat.ui.GradioChat.respond_stream': ('ui.html#gradiochat.respond_stream', 'gradiochat/ui.py'),
-                               'gradiochat.ui.create_chat_app': ('ui.html#create_chat_app', 'gradiochat/ui.py')},
-            'gradiochat.utils': { 'gradiochat.utils._escape_table_cell': ('utils.html#_escape_table_cell', 'gradiochat/utils.py'),
-                                  'gradiochat.utils._format_type': ('utils.html#_format_type', 'gradiochat/utils.py'),
-                                  'gradiochat.utils.pydantic_to_markdown_table': ( 'utils.html#pydantic_to_markdown_table',
-                                                                                   'gradiochat/utils.py')}}}
+                               'gradiochat.ui.create_chat_app': ('ui.html#create_chat_app', 'gradiochat/ui.py')}}}
