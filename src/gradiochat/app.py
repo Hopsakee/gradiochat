@@ -52,7 +52,7 @@ class HuggingFaceClient():
         completion = self.client.chat.completions.create(
             model=self.model_config.model_name,
             messages=openai_messages,
-            max_tokens=kwargs.get("max_tokens", self.model_config.max_tokens),
+            max_completion_tokens=kwargs.get("max_completion_tokens", self.model_config.max_completion_tokens),
             temperature=kwargs.get("temperature", self.model_config.temperature)
         )
 
@@ -91,7 +91,7 @@ class TogetherAiClient():
         completion = self.client.chat.completions.create(
             model=self.model_config.model_name,
             messages=openai_messages,
-            max_completion_tokens=kwargs.get("max_tokens", self.model_config.max_tokens),
+            max_completion_tokens=kwargs.get("max_completion_tokens", self.model_config.max_completion_tokens),
             temperature=kwargs.get("temperature", self.model_config.temperature),
             top_p=kwargs.get("top_p", self.model_config.top_p),
             stop=kwargs.get("stop", self.model_config.stop) or ["<|eot_id|>","<|eom_id|>"]
@@ -108,7 +108,7 @@ class TogetherAiClient():
         stream = self.client.chat.completions.create(
             model=self.model_config.model_name,
             messages=openai_messages,
-            max_tokens=kwargs.get("max_tokens", self.model_config.max_tokens),
+            max_completion_tokens=kwargs.get("max_completion_tokens", self.model_config.max_completion_tokens),
             temperature=kwargs.get("temperature", self.model_config.temperature),
             top_p=kwargs.get("top_p", self.model_config.top_p),
             stop=kwargs.get("stop", self.model_config.stop) or ["<|eot_id|>","<|eom_id|>"],

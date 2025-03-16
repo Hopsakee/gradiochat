@@ -89,7 +89,7 @@ hf_model = ModelConfig(
     provider="huggingface",
     api_key_env_var="HF_API_KEY",  # Will read from environment variable
     api_base_url=None,  # Optional: Custom API endpoint
-    max_tokens=1024,
+    max_completion_tokens=1024,
     temperature=0.7
 )
 ```
@@ -308,7 +308,7 @@ model_config = ModelConfig(
     model_name="mistralai/Mistral-7B-Instruct-v0.2",
     provider="huggingface",
     api_key_env_var="HF_API_KEY",
-    max_tokens=2048,
+    max_completion_tokens=2048,
     temperature=0.8
 )
 
