@@ -12,11 +12,12 @@ import os
 import gradio as gr
 from pathlib import Path
 from dotenv import load_dotenv
+from .utils import *
 
 # %% ../../nbs/00_config.ipynb 9
 class ModelConfig(BaseModel):
     """Configuration for the LLM model"""
-    model_name: str = Field(..., description="Name or path of the model to use")
+    model_name: str = Field(..., description="Name or path of the model to use") # Name
     provider: str = Field(default="huggingface", description="Model provider (huggingface, openai, etc)")
     api_key_env_var: Optional[str] = Field(default=None, description="Environment variable name for API key")
     api_base_url: Optional[str] = Field(default=None, description="Base URL for API reqeuest")
@@ -38,13 +39,13 @@ class ModelConfig(BaseModel):
             raise ValueError(f"The environment variable {self.api_key_env_var} is not found in the .env file.")
         return None
 
-# %% ../../nbs/00_config.ipynb 12
+# %% ../../nbs/00_config.ipynb 13
 class Message(BaseModel):
     """A message in a conversation"""
     role: Literal["system", "user", "assistant"] = Field(..., description="Role of the message sender")
     content: str = Field(..., description="Content of the message")
 
-# %% ../../nbs/00_config.ipynb 15
+# %% ../../nbs/00_config.ipynb 17
 class ChatAppConfig(BaseModel):
     """Main configuration for a chat application"""
     app_name: str = Field(..., description="Name of the application")
