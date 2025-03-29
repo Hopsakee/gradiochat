@@ -89,6 +89,7 @@ def build_interface(self:GradioChat) -> gr.Blocks:
         chatbot = gr.Chatbot(
             height=500,
             label="Conversation",
+            type="messages",
             editable=True,
             show_copy_button=True,
             show_copy_all_button=True)
