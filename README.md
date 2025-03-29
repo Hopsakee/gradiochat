@@ -47,6 +47,7 @@ $ pip install gradiochat
 Here’s a minimal example to get you started.
 
 ``` python
+# Eval is false to prevent testing when nbdev_test or nbdev_prepare is run. The api_key is stored in a .env file and that is not accessible at test time.
 from gradiochat.config import ModelConfig, ChatAppConfig
 from gradiochat.ui import create_chat_app
 from pathlib import Path
@@ -70,6 +71,15 @@ config = ChatAppConfig(
 app = create_chat_app(config)
 app.build_interface().launch()
 ```
+
+    /home/jelle/code/gradiochat/src/gradiochat/ui.py:89: UserWarning: You have not specified a value for the `type` parameter. Defaulting to the 'tuples' format for chatbot messages, but this is deprecated and will be removed in a future version of Gradio. Please set type='messages' instead, which uses openai-style dictionaries with 'role' and 'content' keys.
+      chatbot = gr.Chatbot(
+
+    * Running on local URL:  http://127.0.0.1:7860
+
+    To create a public link, set `share=True` in `launch()`.
+
+<div><iframe src="http://127.0.0.1:7860/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
 
 ### Configuration
 

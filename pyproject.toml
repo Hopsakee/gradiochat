@@ -1,6 +1,6 @@
 [project]
 name = "gradiochat"
-version = "0.2.5"
+version = "0.3.0"
 description = "App to easily create different Gradiochat apps with different context, system messages and gradio themes."
 readme = "README.md"
 authors = [
@@ -15,6 +15,7 @@ license-files = ["LICEN[CS]E*"]
 dependencies = [
     "fastcore>=1.7.29",
     "gradio>=5.20.1",
+    "ollama>=0.4.7",
     "openai>=1.65.4",
     "pydantic>=2.10.6",
     "python-dotenv>=1.0.1",
