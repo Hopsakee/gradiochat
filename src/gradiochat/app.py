@@ -106,6 +106,8 @@ class TogetherAiClient():
             **kwargs) -> Generator[str, None, None]:
         """Generate a streaming chat completion"""
 
+        openai_messages = [{"role": msg.role, "content": msg.content} for msg in messages]
+
         stream = self.client.chat.completions.create(
             model=self.model_config.model_name,
             messages=openai_messages,
@@ -253,9 +255,8 @@ class BaseChatApp:
         messages.append(Message(role="system", content=system_content))
         
         # Add chat history
-        for user_msg, assistant_msg in self.chat_history:
-            messages.append(Message(role="user", content=user_msg))
-            messages.append(Message(role="assistant", content=assistant_msg))
+        for msg in self.chat_history:
+            messages.append(Message(role=msg['role'], content=msg['content']))
         
         # Add current user message
         messages.append(Message(role="user", content=user_message))

@@ -7,7 +7,10 @@ __all__ = ['GradioChat', 'create_chat_app']
 
 # %% ../../nbs/02_ui.ipynb 3
 import gradio as gr
-from typing import List, Tuple, Generator
+import tempfile
+import datetime
+import os
+from typing import List, Tuple, Dict, Generator
 from fastcore.basics import patch
 from .config import ChatAppConfig, ModelConfig
 from .app import BaseChatApp
@@ -22,7 +25,7 @@ class GradioChat:
         self.app = app
         self.interface = None
     
-    def respond(self, message: str, chat_history: List[Tuple[str, str]]) -> Tuple[str, List[Tuple[str, str]]]:
+    def respond(self, message: str, chat_history: List[Dict[str, str]]) -> Tuple[str, List[Tuple[str, str]]]:
         """Generate a response to the user message and update chat history"""
         # Store the current chat history in the app
         self.app.chat_history = chat_history
@@ -31,7 +34,8 @@ class GradioChat:
         response = self.app.generate_response(message)
         
         # Update chat history
-        chat_history.append((message, response))
+        chat_history.append({"role": "user", "content": message})
+        chat_history.append({"role": "assistant", "content": response})
         
         # Return empty message (to clear input) and updated history
         return "", chat_history
@@ -42,7 +46,7 @@ class GradioChat:
         self.app.chat_history = chat_history
         
         # Add user message to history with empty assistant response
-        chat_history.append((message, ""))
+        chat_history.append({"role": "user", "content": message})
         
         # Stream the response
         accumulated_text = ""
@@ -50,12 +54,16 @@ class GradioChat:
             accumulated_text += text_chunk
             
             # Update the last assistant message
-            updated_history = chat_history[:-1] + [(message, accumulated_text)]
+            updated_history = chat_history.copy()
+            updated_history.append({"role": "assistant", "content": accumulated_text})
             
             # Yield empty message and updated history
             yield "", updated_history
 
 # %% ../../nbs/02_ui.ipynb 9
+from datetime import datetime
+
+
 @patch
 def build_interface(self:GradioChat) -> gr.Blocks:
     """Build and return the Gradio interface"""
@@ -106,21 +114,16 @@ def build_interface(self:GradioChat) -> gr.Blocks:
 
         # Export functionality
         with gr.Accordion("Export Options", open=False):
-            export_md = gr.Markdown("Select export options:")
-            
-            with gr.Row():
-                export_last_btn = gr.Button("Export Last Response")
-                export_all_btn = gr.Button("Export Full Conversation")
-            
-            # Hidden textbox to hold the markdown for export
-            export_text = gr.Textbox(visible=False)
+            gr.Markdown("Select export options:")
             
             # Buttons for copying and downloading
             with gr.Row():
-                copy_btn = gr.Button("Copy to Clipboard")
-                download_btn = gr.Button("Download as Markdown")
-            
-            file_output = gr.File(label="Download", visible=False)
+                download_btn = gr.DownloadButton(
+                    label="Download as Markdown",
+                    variant="secondary",
+                    visible=True,
+                    interactive=True
+                )
         
         # System prompt and context viewer (collapsible)
         with gr.Accordion("View System Information", open=False):
@@ -147,51 +150,62 @@ def build_interface(self:GradioChat) -> gr.Blocks:
         def format_last_response(chat_history):
             if not chat_history:
                 return "No conversation to export."
-            last_user_msg, last_assistant_msg = chat_history[-1]
-            return f"# Response\n\n{last_assistant_msg}"
+            msg = chat_history[-1]
+
+            return f"# Response\n\n{msg['content']}"
         
         def format_full_conversation(chat_history):
             if not chat_history:
                 return "No conversation to export."
             
-            markdown = f"# {self.app.config.app_name} - Conversation\n\n"
+            md_str = f"# {self.app.config.app_name} - Conversation\n\n"
             
-            for user_msg, assistant_msg in chat_history:
-                markdown += f"## User\n\n{user_msg}\n\n"
-                markdown += f"## Assistant\n\n{assistant_msg}\n\n"
-                markdown += "---\n\n"
+            for msg in chat_history:
+                role = msg["role"]
+                content = msg["content"]
+                if role == "user":
+                    md_str += f"**👤 User:**\n{content}\n\n"
+                elif role == "assistant":
+                    md_str += f"**🤖 Assistant+**\n{content}\n\n"
+                else:
+                    md_str += f"**{role}:**\n{content}\n\n"
+            return md_str
             
-            return markdown
-        
-        export_last_btn.click(
-            format_last_response,
-            inputs=[chatbot],
-            outputs=[export_text]
-        )
-        
-        export_all_btn.click(
-            format_full_conversation,
-            inputs=[chatbot],
-            outputs=[export_text]
-        )
-        
         # File download functionality
-        def create_markdown_file(markdown_text):
-            return [f"{self.app.config.app_name.replace(' ', '_')}_export.md",
-                markdown_text]
-        
+        def download_chat(chat_history):
+            md_content = format_full_conversation(chat_history)
+            temp_dir = tempfile.gettempdir()
+            filename = f"conversation_{datetime.today().strftime('%Y-%m-%d')}.md"
+            filepath = Path(temp_dir) / filename
+            
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(md_content)
+            
+            os.chmod(filepath, 0o644)
+
+            return filepath
+
         download_btn.click(
-            lambda text: [f"{self.app.config.app_name.replace(' ','_')}._export.md", text],
-            inputs=[export_text],
-            outputs=[file_output]
+            fn=download_chat,
+            inputs=[chatbot],
+            outputs=[download_btn]
         )
             
         # Initialize with starter prompt if available
         if self.app.config.starter_prompt:
-            chatbot.value = [("", self.app.config.starter_prompt)]
+            chatbot.value = [{"role": "assistant", "content": self.app.config.starter_prompt}]
         
         self.interface = interface
         return interface
+
+# %% ../../nbs/02_ui.ipynb 11
+@patch
+def launch(self:GradioChat, **kwargs):
+    """Launch the Gradio interface"""
+    if self.interface is None:
+        self.build_interface()
+    
+    return self.interface.launch(**kwargs)
 
 # %% ../../nbs/02_ui.ipynb 14
 def create_chat_app(
