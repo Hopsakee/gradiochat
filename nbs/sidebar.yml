@@ -2,4 +2,10 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_dataclasses.ipynb
+      - 00_config.ipynb
+      - 01_app.ipynb
+      - 02_ui.ipynb
+      - 96_gradio_preconfigs.ipynb
+      - 97_gradiochat_utils.ipynb
+      - 98_gradio_themes.ipynb
+      - 99_gradio_themesbuilder.ipynb

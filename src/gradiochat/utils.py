@@ -41,7 +41,7 @@ def pydantic_to_markdown_table(model_class: Type[BaseModel]) -> None:
             property_comments[property_part] = comment_part
     
     # Start building the markdown table
-    table = "| Variable | Type | Default | Details |\n"
+    table = "\n| Variable | Type | Default | Details |\n"
     table += "|---|---|---|---|\n"
     
     # Get type hints and model fields
